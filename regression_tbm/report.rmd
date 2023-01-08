@@ -1,0 +1,755 @@
+q--
+title: "Real Estate Rent Estimation"
+author: "Cafe24 Data Analysis Team"
+date: '2019 7 5 '
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  eval = TRUE,
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+# Overview
+The model aims to predict rent of a commercial real estate based on various information including size, location, floor and closeness to road and subway. The resulting model can be used to calculate price estimate and find undervalued items from listing.
+
+# data preparation
+
+```{r eval=TRUE,echo=FALSE}
+#load('regression.RData')
+library(knitr)
+library(rpart.plot)
+```
+
+Read and transfer the data from the excel file. When testing as a sample, only use 300 data, but use the whole data set when doingthe real calculation. 
+
+```{r eval=TRUE}
+library(dplyr)
+library(ggplot2)
+library(caret)
+library(ModelMetrics)
+library(purrr)
+
+df0 <- read.csv('list.csv') #[1:300,]
+names(df0)[1] <- 'Util'
+```
+
+Data from the file.
+
+```{r eval=TRUE}
+DT::datatable(head(df0), caption='TBM Data')
+```
+
+
+
+The values of the variable "response" are placed in the "RENT" column. The other variables are saved into "predictors". scaling, center 등 별도 조정은 하지 않는다.
+
+[]
+
+```{r eval=TRUE}
+df0$Length <- log(df0$Length)
+response <- 'Util'
+predictors <- names(df0)[ !(names(df0) %in% response) ]
+```
+
+
+
+When using linear regression, the basic model "form" and the most sophisticated model "final_mod". "final_mod" is a model that assumes the interaction between all variables.
+
+```{r}
+form <- as.formula(paste(response,'~ .'))
+final_mod <- as.formula(paste(response,'~ . ^ 2'))
+```
+
+예측에 사용할 데이터
+
+Data that will be used for the prediction
+
+```{r eval=TRUE}
+DT::datatable(df0, caption='Rent Price Data to be used for Analysis')
+```
+
+Between the numeric data, the ones that are above 60 are transformed into factors. The data is divided into numerical data "num_vars" and factor data "fct_vars".
+
+```{r eval=TRUE}
+num_vars <- fct_vars <- NULL
+for(vars in names(df0)){
+  if(class(df0[,vars]) %in% c('integer', 'numeric')){
+    if(length(unique(df0[,vars])) > 20) num_vars <- c(num_vars,vars) else fct_vars <- c(fct_vars,vars) 
+  } else {
+    fct_vars <- c(fct_vars,vars)
+  }
+}
+
+for(vars in fct_vars) df0[,vars] <- factor(df0[,vars])
+```
+
+```{r eval=TRUE}
+num_vars
+fct_vars
+```
+
+Split the data into 8:2 with the first being the train set and the latter being the test set. Set the train set index to train.idx and the test set index to test.idx. Save the real rent price of the test set into "actual".
+
+```{r}
+train.idx <- sample( 1:nrow(df0), 0.8*nrow(df0))
+test.idx <- (1:nrow(df0))[-train.idx]
+train_df <- df0[train.idx,]
+test_df <- df0[test.idx,]
+actual <- test_df[,response]
+```
+
+# Visual Exploration
+
+
+## numeric variable distributions
+```{r eval=TRUE}
+imap(set_names(num_vars), ~ ggplot(df0) + geom_histogram(aes(.data[[.x]])) + labs(title =.y))
+```
+
+## numeric variable boxplots categorzed by facotors
+
+```{r eval=TRUE}
+box_plot_fun <- function(x,y) ggplot(df0) + geom_boxplot(aes(y=.data[[x]],x=.data[[y]]))
+map(fct_vars, ~ map(num_vars, box_plot_fun, y=.x))
+```
+
+
+## correlation between numeric variables
+
+correlation chart
+
+```{r eval=TRUE}
+corrplot::corrplot.mixed(cor(df0[,num_vars]), tl.col='black')
+GGally::ggpairs(df0, cardinality_threshold=60)
+```
+
+correlation coefficients
+
+```{r eval=TRUE}
+DT::datatable(cor(df0[,num_vars]), caption='Correlations between Numeric Variables')
+```
+
+definition of the plotting function
+
+```{r eval=TRUE}
+show_res_all <- function(fit){
+  
+  ureal <- as.numeric(df0[,response]) # 실제값
+  upred <- as.numeric(predict(fit, newdata=df0)) # 예측값
+  mae <- mean(abs(ureal[test.idx]-upred[test.idx]))
+  
+  colors <- rep('10 train', nrow(df0)) # 색깔 - 학습데이터는 파란색, 테스트 데이터는 빨간색
+  colors[test.idx] <- '20 test'
+  
+  p <- ggplot(data.frame(predict=upred,actual=ureal,set=colors)) + 
+    geom_point(aes(actual,predict,color=set)) + 
+    scale_x_continuous(limits=range(ureal)) + scale_y_continuous(limits=range(ureal)) + geom_abline(intercept=0,slope=1) +
+    labs(title = paste(deparse(substitute(fit)),'MAE',round(mae,3)))
+  print(p)
+}
+```
+
+# Linear Regression
+
+basic model of a linear equation based on the relationship of variables in order to predict an outcome.
+
+```{r}
+fit.lm <- lm(form, data = df0)
+pred.lm <- predict(fit.lm, newdata = test_df)
+```
+
+```{r eval=TRUE}
+show_res_all(fit.lm)
+```
+
+```{r eval=TRUE}
+summary(fit.lm)
+```
+
+# Robust Linear Regression
+
+Linear regression but it removes outliers that may alter the equation too much, to provide a better and more accurate fit.
+
+
+```{r}
+fit.rlm <- MASS::rlm(form, data = df0)
+pred.rlm <- predict(fit.rlm, newdata = test_df)
+```
+
+```{r eval=TRUE}
+show_res_all(fit.rlm)
+```
+
+```{r eval=TRUE}
+summary(fit.rlm)
+```
+
+# Linear Model Selection
+
+A model selection method, starting from the most complex model and removing factors successively to find the best fit
+
+
+```{r}
+step <- MASS::stepAIC(lm(final_mod,data=df0),k=2,direction='backward')
+```
+
+모델이 바뀌어 나간 히스토리. 앞의 *-* 표시가 해당변수를 제거한 모델을 의미한다
+```{r eval=TRUE}
+step$anova
+```
+
+그렇게 구한 최적의 모델
+
+```{r}
+form.lm.opt <- formula(step)
+pred.lm.opt <- predict(step, newdata = test_df)
+fit.lm1 <- step  # 최종적으로 가장 좋은 모델을 fit.ml1 에 넣는다
+```
+
+```{r eval=TRUE}
+show_res_all(step)
+```
+
+# Linear Regression by Cross validation
+
+Modelling by splitting the data set into train and test data.
+
+
+```{r}
+fitControl <- trainControl(method = "repeatedcv", number = 10, repeats = 10)
+fit.reg <- train(form.lm.opt, data = train_df, method = 'lm', trControl = fitControl)
+pred.reg <- predict(fit.reg,newdata=test_df)
+```
+
+```{r eval=TRUE}
+show_res_all(fit.reg)
+```
+
+# MARS
+
+Modeling based on set intervals.
+
+Multiple Adaptive Regression Spline.
+
+definition of hyper parameter grid to search.
+
+```{r}
+hyper_grid <- expand.grid(
+  degree = 1:5, 
+  nprune = seq(2, 100, length.out = 20) %>% floor()
+)
+```
+
+hyperparameter search .
+
+```{r}
+fit.mars <- train(
+  x = subset(train_df[,predictors]),
+  y = train_df[,response],
+  method = "earth",
+  metric = "MAE",
+  trControl = trainControl(method = "cv", number = 10),
+  tuneGrid = hyper_grid
+)
+
+pred.mars <- predict(fit.mars, newdata=test_df)
+
+```
+
+best model
+
+```{r eval=TRUE}
+fit.mars$bestTune
+```
+
+result plot
+
+```{r eval=TRUE}
+ggplot(fit.mars)
+```
+
+```{r eval=TRUE}
+show_res_all(fit.mars)
+```
+
+# decision tree
+
+MOdelling based on branches of outcomes.
+
+```{r}
+
+library(rpart)
+library(rpart.plot)
+
+fitControl <- trainControl(method = "repeatedcv", number = 10, repeats = 10)
+df.tree <- rpart( form, method="anova", data=df0)
+```
+
+```{r eval=TRUE}
+summary(df.tree) # tree Rule 을 표시
+prp(df.tree,type=1) # tree 자체를 그려주는 함수
+```
+
+# parameter search
+
+```{r}
+hyper_grid <- expand.grid(
+  cp = seq(0.01,0.15,by=0.01) # 트리의 복잡도(complexity parameter)
+)
+
+fit.tree <- train( form, data=train_df, method = 'rpart', metric='MAE', 
+                   trControl = fitControl, tuneGrid = hyper_grid)
+pred.tree <- predict(fit.tree, newdata = test_df)
+```
+
+```{r eval=TRUE}
+fit.tree
+```
+
+```{r eval=TRUE}
+prp(fit.tree$finalModel,type=1)
+```
+
+```{r eval=TRUE}
+
+show_res_all(fit.tree)
+```
+
+# ctree
+
+```{r}
+hyper_grid <- expand.grid(
+  maxdepth = 2:10
+)
+
+fit.tree2 <- train(form, data=train_df, method = 'rpart2', metric='MAE', 
+                   trControl = fitControl, tuneGrid = hyper_grid)
+
+pred.tree2 <- predict(fit.tree2, newdata = test_df)
+```
+
+```{r eval=TRUE}
+prp(fit.tree2$finalModel,type=1)
+```
+
+```{r eval=TRUE}
+show_res_all(fit.tree2)
+```
+
+# forest
+
+Modelling with a large number of decision trees.
+```{r}
+
+library(randomForest)
+df.forest <- randomForest(form,data=train_df)
+
+ypred <- predict(df.forest, newdata = test_df)
+mae(ypred, actual)
+
+hyper_grid <- expand.grid( mtry = 2:5, splitrule = c('extratrees'), min.node.size = c(1,3,5))
+fit.rf <- train( form, data = train_df, method='ranger',
+                 trControl = fitControl, tuneGrid = hyper_grid)
+
+pred.rf <- predict(fit.rf, newdata =test_df)
+```
+
+```{r eval=TRUE}
+show_res_all(fit.rf)
+```
+
+# neural net regression
+
+Modelling that predicts an outcome as a function of the inputs.
+
+```{r}
+library(nnet)
+
+hyper_grid <- expand.grid( size=c(15,20,30), decay = c(0,0.1))
+fit.nnet <- train( form, data = train_df, method='nnet',
+                   linout = 1, maxit = 50, tuneGrid = hyper_grid, trControl = fitControl)
+
+pred.nnet <- predict(fit.nnet, newdata=test_df)[,1]
+```
+
+```{r eval=TRUE}
+show_res_all(fit.nnet)
+```
+
+# boosting
+
+```{r}
+fitControl <- trainControl(method = "repeatedcv", number = 10, repeats = 10, 
+                           verboseIter = FALSE, allowParallel = TRUE)
+
+hyper_grid <-  expand.grid(interaction.depth = c(1, 5, 10), 
+                           n.trees = seq(1,10,by=5)*50, 
+                           shrinkage = c(0.01,0.05),
+                           n.minobsinnode = c(10))
+
+fit.gbm <- train(form, data=train_df, method = 'gbm', 
+                 metric = 'MAE',
+                 maximize = FALSE,
+                 trControl=fitControl, tuneGrid = hyper_grid,
+                 verbose=FALSE)
+
+pred.gbm <- predict(fit.gbm, newdata = test_df)
+```
+
+```{r eval=TRUE}
+show_res_all(fit.gbm)
+```
+
+# xgboost
+
+```{r}
+
+xgb_trcontrol = trainControl(
+  method = "cv",
+  number = 5,  
+  allowParallel = TRUE,
+  verboseIter = FALSE,
+  returnData = FALSE
+)
+
+xgbGrid <- expand.grid(nrounds = c(100,200),  
+                       max_depth = c(10,15,20),
+                       colsample_bytree = seq(0.5, 0.9, length.out = 5),
+                       ## The values below are default values in the sklearn-api. 
+                       eta = 0.1,
+                       gamma=0,
+                       min_child_weight = 1,
+                       subsample = 1
+)
+
+set.seed(0)
+fit.xgb = train(
+  form, train_df,  
+  trControl = xgb_trcontrol,
+  tuneGrid = xgbGrid,
+  method = "xgbTree"
+)
+
+pred.xgb <- predict(fit.xgb, newdata=test_df)
+```
+
+```{r eval=TRUE}
+show_res_all(fit.xgb)
+```
+
+# Ridge using caret
+
+```{r}
+set.seed(849)
+fit.ridge <- train(form, train_df, method = "glmnet",
+                   trControl=fitControl,preProc = c("center","scale"),
+                   tuneGrid = expand.grid(alpha = 0,
+                                          lambda = 0))
+pred.ridge <- predict(fit.ridge,newdata=test_df)
+```
+
+```{r eval=TRUE}
+show_res_all(fit.ridge)
+```
+
+# Lasso
+
+```{r}
+set.seed(849)
+fit.lasso<- train(form, train_df, method = "glmnet",
+                  trControl=fitControl,preProc = c("center","scale"),
+                  tuneGrid = expand.grid(alpha = 1,
+                                         lambda = 0))
+pred.lasso <- predict(fit.lasso,newdata=test_df)
+```
+
+```{r eval=TRUE}
+show_res_all(fit.lasso)
+```
+
+# Keras Neural Network
+
+Keras Deep Neural Net 을 이용해서 모델링을 한다. 먼저 *keras* 를 인스톨 해야 한다.
+
+다음에 팩터 변수들을 임베딩 처리한다.
+- 팩터의 경우 one-hot encoding 하면 되지만 갯수가 많을경우 overfitting 문제가 있다
+- 그래서 팩터들을 one-hot 으로 바꾼 후, 이를 다시 더 낮은 차원으로 임베딩한다
+- 임베딩 방법은 직접 예측할 변수를 피팅하고, 그 중간 레이어의 변수를 이용하거나
+- 또는 autoencoder 를 만들어서 사용한다
+
+- 팩터의 값 갯수가 *embed_cutoff* 보다 크면 임베딩 한다
+- 임베딩은 팩터값 갯수/2 혹은 *embed_min_dim* 중에 큰 것으로 한다
+- 임베팅 학습의 반복은 *iter* 로 지정한다.
+- 임베딩 방법은 *embed_method* 로 지정한다
+
+```{r}
+library(keras)
+
+embed_cutoff <- 10
+embed_min_dim <- 10
+embed_mat <- NULL
+embed_iter <- 10
+embed_fit_target <- as.numeric(df0[,response])
+embed_method <- 'autoencoder'
+```
+
+전체 변수에 대해 수치형은 그대로, 값의 갯수가 적은 팩터는 one-hot encoding 으로 데이터를 만든다.
+```{r}
+for(var in names(df0)){
+  
+  if(var == response) next
+  if(class(df0[,var]) == 'character') df0[,var] <- factor(df0[,var])
+  
+  if(class(df0[,var]) %in% c('integer', 'numeric')){
+    cat('Numeric :',var,'\n')
+    embed_mat1 <- df0[,var,drop=F]
+    if(is.null(embed_mat)) embed_mat <- embed_mat1 else embed_mat <- cbind(embed_mat, embed_mat1)
+    next
+  }
+  
+  nunique <- length(unique(df0[,var]))
+  
+  if(nunique <= embed_cutoff){
+    cat('Factor : Accept',var,'\n')
+    embed_mat1 <- to_categorical(as.numeric(df0[,var,drop=TRUE])-1)
+    colnames(embed_mat1) <- paste0(var,'_',1:ncol(embed_mat1))
+    embed_mat <- cbind(embed_mat, embed_mat1)
+    next
+  }
+#  ```
+#  
+#  그렇지 않은 경우 임베딩을 한다. 피팅의 경우는 피팅하는 중간의 레이어에서 임베딩을 가져온다
+#  ```{r}
+  cat('Factor : Embed',var,'\n')
+  
+  embed_var <- var
+  input_size <- length(unique(df0[,embed_var]))
+  embedding_size <- max(embed_min_dim,min(input_size/2,50))
+  
+  if(embed_method == 'fit'){ 
+    # method 1. fit
+    model <- keras_model_sequential()
+    model %>%
+      layer_embedding(input_dim = input_size, output_dim = embedding_size, input_length = 1, name = paste0('emb_',embed_var)) %>%
+      layer_flatten() %>%
+      layer_dense(units=40,activation='relu') %>%
+      layer_dense(units=10,activation='relu') %>%
+      layer_dense(units=1)
+    
+    model %>% compile(loss='mse',optimize='sgd',metric='accuracy')
+    dummyX <- to_categorical(as.numeric(df0[,embed_var])-1)
+    
+    hist <- model %>% fit(x=dummyX,y=embed_fit_target, epochs = embed_iter, batch_size = 2)
+    layer <- get_layer(model,paste0('emb_',embed_var))
+    embed_coef <- data.frame(layer$get_weights()[[1]])
+    name <- levels(df0[,embed_var])
+    apply(embed_coef,2,sd)
+    ggplot(embed_coef) + geom_point(aes(X4,X5,color=name)) + guides(color=FALSE) + geom_text(aes(X4,X5,label=name))
+    embed_mat1 <- to_categorical(dummyX) %*% as.matrix(embed_coef)
+#   ```
+#    
+#    autoencoder 로 하는 경우, 중간 레이어에서 가져온다
+#    
+#    ```{r}
+  } else {
+    # method 2. autoencoder
+    model <- keras_model_sequential()
+    model %>%
+      layer_dense(units = embedding_size*2, activation='tanh', input_shape = input_size) %>%
+      layer_dense(units = embedding_size, activation='tanh', name=paste0('emb_',embed_var)) %>%
+      layer_dense(units = embedding_size*2, activation='tanh') %>%
+      layer_dense(units = input_size)
+    
+    model %>% compile(loss = 'mse',optimizer='adam')
+    dummyX <- to_categorical(as.numeric(df0[,embed_var])-1)
+    model %>% fit(x=dummyX, y=dummyX, epochs=embed_iter, batch_size=32)
+    embed_model <- keras_model(inputs=model$input,outputs=get_layer(model,paste0('emb_',embed_var))$output)
+    embed_mat1 <- predict(embed_model,dummyX)
+  }
+  colnames(embed_mat1) <- paste0(embed_var,1:ncol(embed_mat1))
+  
+  embed_mat <- cbind(embed_mat, embed_mat1)
+}
+
+```
+
+전체 데이터를 하나로 합치고 여기서 위에서 구한 인덱스를 이용해서 학습 및 테스트 셋을 나눈다
+```{r}
+embed_mat <- as.matrix(embed_mat)
+train_data <- embed_mat[train.idx,]
+train_labels <- df0[train.idx, response]
+test_data <- embed_mat[test.idx,]
+test_labels <- df0[test.idx,response]
+```
+
+
+```{r}
+save(file='keras_regression.RData',embed_mat,train_data,train_labels,test_data,test_labels)
+```
+
+
+
+```{r}
+build_model <- function() {
+  
+  model <- keras_model_sequential() %>%
+    layer_dense(units = 64, activation = "relu",
+                input_shape = dim(train_data)[2]) %>%
+    layer_dropout(0.2) %>%
+    layer_dense(units = 64, activation = "relu") %>%
+    layer_dropout(0.2) %>%
+    layer_dense(units = 16, activation = "linear") %>%
+    layer_dense(units = 1)
+  
+  model %>% compile(
+    loss = "mae",
+    optimizer = optimizer_rmsprop(),
+    metrics = list("mean_absolute_error")
+  )
+  
+  model
+}
+
+model <- build_model()
+```
+
+
+```{r eval=TRUE}
+model %>% summary()
+```
+
+
+
+
+```{r}
+# 중간에 점 찍기
+print_dot_callback <- callback_lambda(
+  on_epoch_end = function(epoch, logs) {
+    if (epoch %% 80 == 0) cat("\n")
+    cat(".")
+  }
+)    
+```
+
+
+
+
+```{r}
+epochs <- 1000
+
+# Fit the model and store training stats
+history <- model %>% fit(
+  train_data,
+  train_labels,
+  epochs = epochs,
+  validation_split = 0.2,
+  verbose = 1,
+  callbacks = list(print_dot_callback)
+)
+```
+
+
+
+```{r}
+plot(history, metrics = "mean_absolute_error", smooth = FALSE) +
+  coord_cartesian()
+```
+
+
+
+```{r}
+c(loss, MAE) %<-% (model %>% evaluate(test_data, test_labels, verbose = 0))
+```
+
+```{r}
+paste0("Mean absolute error on test set:", sprintf("%.2f", MAE ))
+```
+
+```{r}
+pred.keras <- (model %>% predict(test_data))[,1]
+```
+
+
+```{r}
+plot(actual, pred.keras)
+mean(abs(actual-pred.keras))
+abline(0,1)
+```
+
+# Summary
+
+pred.* 변수들을 한데 모은다
+```{r}
+vars <- ls()
+predvars <- vars[grepl('^pred\\.',vars)]
+results <- sapply(predvars,get)
+colnames(results) <- predvars
+```
+
+실제값과의 차이를 구한다
+```{r}
+resid <- sweep(results,1,actual)
+```
+
+성능지표들의 평균값과 중간값 구하기
+
+```{r}
+result_summary <- function(df, base_df, fun){
+  data.frame(
+    bias = apply(df,2,fun),
+    mae = apply(abs(df),2,fun),
+    rmse = sqrt(apply(df^2,2,fun)),
+    mape = apply(abs(df/base_df),2,fun))
+}
+
+fit.result.means <- result_summary(resid, results, mean)
+fit.result.medians <- result_summary(resid, results, median)
+```
+
+모델별 지표 비교. lm 계열의 결과들은 Cross Validation 한 것이 아니고, 전체 데이터에 대한 모델링 (학습에 대한 에러) 만 나온 것임.
+
+모델별 평균값
+```{r eval=TRUE}
+DT::datatable( round(fit.result.means,4), caption='Metric - Mean values',options = list(pageLength = 20))
+```
+
+모델별 중간값
+
+```{r eval=TRUE}
+DT::datatable( round(fit.result.medians,4), caption='Metric - Median Values',options = list(pageLength = 20))
+```
+
+# Variable Importance
+
+```{r eval=TRUE}
+get_var_imp <- function(x){
+  
+  fit_name <- deparse(substitute(x))
+  try({
+  x <- get(x)
+  var_imp <- (varImp(x)$importance)
+  var_imp$name <- rownames(var_imp)
+  var_imp %>% arrange(desc(Overall)) %>% head(20) %>% ggplot() + geom_bar(aes(y=Overall,x=name),stat='identity') + 
+    coord_flip() + labs(title = fit_name) -> p
+  print(p)
+  })
+}
+
+sapply(vars[grepl('^fit\\.',vars)], get_var_imp)
+```
+
+```{r}
+get_var_imp('fit.mars')
+```
+
+
+
+# 결과저장
+```{r}
+save.image(file='regression.RData')
+```

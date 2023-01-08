@@ -1,0 +1,232 @@
+﻿Util,Type,Diameter,Length,GeoCondition
+33,Gripper,9.43,8925,Igneous
+38,Gripper,10.05,1667,Metamorphic
+24,Gripper,10.05,2528,Metamorphic
+39,Gripper,10.05,1812,Metamorphic
+49,Gripper,10.05,3592,Metamorphic
+34,Gripper,10.05,9599,Metamorphic
+36.8,Gripper,7.6,14657,Igneous
+21.7,Gripper,7.2,17375,Igneous
+24.9,Gripper,7.2,11931,Igneous
+15.6,DS,6.73,8000,Sedimentary
+9,DS,6.12,5000,Sedimentary
+12,DS,4.5,17956,Sedimentary
+35,DS,2.9,1279,Sedimentary
+34,DS,2.9,5200,Sedimentary
+51.9,DS,8.07,7200,Igneous
+24,EPB,6.57,860,Sedimentary
+16,EPB,6.57,860,Sedimentary
+31,Gripper,9.43,5000,Igneous
+17.64,DS,4.66,16042,Sedimentary
+25.4,DS,4.66,10639,Sedimentary
+23,Gripper,3.5,8224,Sedimentary
+26.7,Gripper,3.5,6030,Sedimentary
+28.2,Gripper,3.5,8491,Sedimentary
+38.3,Gripper,3.5,3790,Sedimentary
+25.4,Gripper,3.4,13400,Sedimentary
+32.5,Gripper,5.77,8784,Metamorphic
+38.3,SS,7.6,3522,Sedimentary
+23,Slurry,6.6,2000,Igneous
+10.31,Gripper,6.8,510,Igneous
+34,DS,6.98,5947,Sedimentary
+35,DS,6.98,3400,Sedimentary
+38,Gripper,7.06,8000,Metamorphic
+34,Gripper,10,9800,Metamorphic
+32,Gripper,2.6,5400,Igneous
+35.5,DS,3.56,7500,Igneous
+26.8,Gripper,4.8,5300,Igneous
+42.6,DS,3.84,6600,Metamorphic
+44,DS,3.56,7000,Igneous
+38.3,DS,3.5,3000,Sedimentary
+49.5,Gripper,4.32,6289,Igneous
+40.2,Gripper,3.5,10275,Igneous
+26.1,Gripper,3.6,3086.34,Igneous
+29.97,Gripper,3.6,2590.4,Igneous
+30.24,Gripper,5.8,4199,Sedimentary
+49,Gripper,3.9,13500,Sedimentary
+28,Gripper,6.7,4040,Metamorphic
+34.4,Gripper,6.7,3427,Metamorphic
+40,Gripper,9.85,14075,Sedimentary
+39.2,Gripper,5.6,3111,Sedimentary
+45.1,Gripper,5.6,3112,Sedimentary
+35.4,Gripper,5.7,2198,Sedimentary
+35.1,Gripper,5.6,2152,Sedimentary
+41.1,Gripper,5.8,5058,Sedimentary
+44.4,Gripper,6.5,7364,Sedimentary
+26,Gripper,5.5,2055,Igneous
+19,Gripper,5,10700,Igneous
+30,Gripper,5,16500,Igneous
+26,Gripper,5,17400,Igneous
+39,DS,6.18,7903,Sedimentary
+13,EPB,4.88,1646.4,Igneous
+27,EPB,4.88,4168.8,Igneous
+35.8,DS,5.54,11649,Sedimentary
+35.8,DS,5.54,5052,Sedimentary
+10,DS,5,1670,Sedimentary
+10.97,DS,4.527,3728.6,Sedimentary
+26,SS,9.9,9856,Sedimentary
+19,SS,9.9,10236,Sedimentary
+27,SS,9.9,5862,Sedimentary
+39,DS,9.5,3000,Metamorphic
+29.37,DS,10,11000,Metamorphic
+21.62,DS,10,11000,Metamorphic
+27.81,DS,10,5200,Metamorphic
+13,DS,4.8,1140,Metamorphic
+23,DS,4.8,2396,Sedimentary
+18,DS,11.74,1198,Metamorphic
+16,DS,11.74,2140,Sedimentary
+32.4,Gripper,4.3,6021,Metamorphic
+48.7,Gripper,5,7816,Metamorphic
+49.6,Gripper,4.3,11861,Metamorphic
+34.5,Gripper,3.5,8219,Metamorphic
+50.7,Gripper,3.5,6162,Metamorphic
+48.8,Gripper,8.5,7334,Metamorphic
+45.3,Gripper,3.5,9273,Metamorphic
+43,Gripper,4.5,8200,Metamorphic
+47,Gripper,4.5,3200,Metamorphic
+47,Gripper,4.5,3800,Metamorphic
+55,Gripper,3.5,5400,Metamorphic
+40,Gripper,3.5,7800,Metamorphic
+37,Gripper,3.5,8100,Metamorphic
+28.5,Gripper,4.5,800,Sedimentary
+7.2,Gripper,4.5,400,Sedimentary
+50,DS,4.305,6618,Sedimentary
+42,DS,7.88,3000,Sedimentary
+29,EPB,3.25,4344,Sedimentary
+45,EPB,3.15,1413,Sedimentary
+26,Gripper,6.7,2183,Metamorphic
+34,Gripper,6.7,2375,Metamorphic
+24,DS,4.4,5172,Metamorphic
+21.4,Gripper,8.02,6746,Metamorphic
+17.7,Gripper,8.02,1468,Metamorphic
+32,Gripper,9.33,3240,Metamorphic
+21,EPB,4.52,5101,Sedimentary
+20,EPB,4.52,5548,Sedimentary
+26.5,Gripper,4.5,3624,Metamorphic
+33.2,Gripper,5,3646,Metamorphic
+21.05,Gripper,5,4789,Igneous
+27.4,Slurry,7.3,420,Igneous
+9.7,Slurry,7.3,420,Igneous
+5.9,EPB,7.4,712.5,Metamorphic
+36.3,EPB,7.4,712.5,Metamorphic
+19.9,Slurry,7.8,1807,Igneous
+20.4,Slurry,7.8,1807,Igneous
+18,EPB,7.93,1272,Metamorphic
+37.1,Gripper,5,4890,Igneous
+38.6,Gripper,3.5,3835,Igneous
+34.8,Gripper,3.5,4361,Igneous
+32.3,Gripper,3.5,8054,Igneous
+31.9,Gripper,3.5,7593.5,Igneous
+34.6,Gripper,3.5,2472.5,Igneous
+30.9,Slurry,7.02,2763,Igneous
+30.4,Slurry,6.72,1393,Igneous
+18.5,Slurry,6.72,1530,Igneous
+30.2,Slurry,6.72,1393,Igneous
+31.1,Slurry,6.88,2640,Igneous
+33,Slurry,6.88,2639,Igneous
+32.9,Slurry,6.88,2186,Igneous
+34.8,Slurry,6.88,2810,Igneous
+35.3,Slurry,6.88,1674,Igneous
+27,EPB,7.05,6249,Sedimentary
+26.1,EPB,7.05,3908,Sedimentary
+29.2,EPB,7.05,6369,Sedimentary
+26.8,EPB,7.05,4660,Sedimentary
+30.2,Slurry,13.7,3340,Sedimentary
+32.2,DS,5.74,11474,Sedimentary
+28,Gripper,3.8,7205,Metamorphic
+27,Gripper,3.8,7364,Metamorphic
+23,Gripper,3.8,7325,Metamorphic
+33,Gripper,5.58,9618,Sedimentary
+47,Gripper,3.55,12000,Metamorphic
+33,Gripper,3,1175,Sedimentary
+40,Gripper,3.35,2700,Sedimentary
+25,Gripper,3.5,940,Sedimentary
+20,Gripper,3.5,1020,Sedimentary
+31.2,DS,5.5,13700,Igneous
+30.4,Gripper,4.67,5683,Sedimentary
+42,Gripper,7.8,3200,Metamorphic
+55,Gripper,7.8,3800,Metamorphic
+53.3,SS,11.52,4356,Sedimentary
+53.4,Gripper,10.77,5407,Sedimentary
+51.1,Gripper,10.77,6453,Sedimentary
+55.6,Gripper,10.77,901,Sedimentary
+35.1,Gripper,10.74,7725,Sedimentary
+55.8,Gripper,9.85,11491,Sedimentary
+51.5,Gripper,9.85,6679,Sedimentary
+43.7,Gripper,9.85,3975,Sedimentary
+30.3,Gripper,9.83,7532,Sedimentary
+34.4,Gripper,9.83,7322,Sedimentary
+38,Gripper,9.17,8304,Sedimentary
+36.2,Gripper,6.73,6727,Sedimentary
+45.9,Gripper,6.73,7322,Sedimentary
+50.4,Gripper,6.48,12843,Sedimentary
+70.7,Gripper,5.54,3251,Sedimentary
+31,Gripper,4.65,2092,Sedimentary
+49.6,Gripper,4.32,10799,Sedimentary
+28.8,Gripper,4.32,3862,Sedimentary
+44.8,Gripper,3.76,4216,Sedimentary
+39.2,Gripper,3.76,4780,Sedimentary
+29.6,Gripper,3.71,5440,Sedimentary
+20,Gripper,3.71,966,Sedimentary
+48.8,Gripper,2.74,1625,Sedimentary
+39.1,Gripper,2.67,3685,Sedimentary
+31.7,Gripper,2.5908,9398.5456,Sedimentary
+49.8,Gripper,1.9812,5294.7286,Sedimentary
+47.5,Gripper,1.9812,7081.096,Sedimentary
+55,Gripper,3.66,6087,Igneous
+36,Gripper,4.34,6070,Igneous
+22,Gripper,6.49,2947,Igneous
+47,Gripper,6.49,2478,Igneous
+39,Slurry,9.43,795,Soft soil
+36,Slurry,9.43,743,Soft soil
+38,Slurry,9.43,888,Soft soil
+43,Slurry,9.43,998,Soft soil
+46,Slurry,9.43,740,Soft soil
+40,Slurry,9.43,986,Soft soil
+51,Slurry,9.43,683,Soft soil
+30.9,EPB,4.3,3548,Soft soil
+24.3,EPB,4.3,3727,Soft soil
+33,Slurry,14.2,700,Soft soil
+38,Slurry,14.2,1300,Soft soil
+24,Slurry,14.2,550,Soft soil
+25,EPB,3.5,1829,Sedimentary
+26,Gripper,3.2,1200,Igneous
+26.1,EPB,7.05,6144,Sedimentary
+24.9,EPB,7.05,6156,Sedimentary
+23.3,EPB,7.05,4083,Sedimentary
+19.5,EPB,7.05,4092,Sedimentary
+26.5,EPB,7.05,6454,Sedimentary
+26.7,EPB,7.05,6464,Sedimentary
+34.7,EPB,7.05,9056,Sedimentary
+26.7,EPB,7.05,5828,Sedimentary
+34.5,EPB,7.05,9026,Sedimentary
+24.2,EPB,7.05,5771,Sedimentary
+27.7,EPB,7.05,4225,Sedimentary
+23.9,EPB,7.05,4365,Sedimentary
+23.3,EPB,7.05,4394,Sedimentary
+21.8,EPB,7.05,3552,Sedimentary
+22.6,EPB,7.05,2673,Sedimentary
+26,EPB,7.05,3722,Sedimentary
+27,EPB,7.05,3715,Sedimentary
+62.8,EPB,11.53,5200,Soft soil
+50,DS,4.305,3470,Sedimentary
+29,EPB,3.25,4344,Sedimentary
+34.4,Gripper,6.5,6920,Metamorphic
+40.5,Gripper,6.8,8230,Metamorphic
+46.8,Gripper,5.64,2491,Sedimentary
+24,Gripper,3.5,14000,Metamorphic
+18.3,Gripper,3.54,9088,Sedimentary
+17.9,Gripper,4.5,4900,Metamorphic
+18.7,Gripper,5.33,13900,Metamorphic
+33,DS,5.56,5000,Sedimentary
+28.3,DS,4.3,3081,Metamorphic
+19.6,Slurry,13.05,1750,Soft soil
+23.5,Slurry,13.05,3054,Soft soil
+27.1,EPB,9.26,243,Soft soil
+41.5,EPB,9.26,1647,Sedimentary
+15,EPB,8,1130,Soft soil
+16.9,EPB,8,1140,Soft soil
+13.7,EPB,8,2379,Soft soil
+16,EPB,8,1478,Soft soil
+16.4,EPB,6.65,629.9,Soft soil
+16.7,EPB,6.65,709.4,Soft soil

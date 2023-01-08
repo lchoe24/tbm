@@ -1,0 +1,637 @@
+---
+title: "업무 자동화 상급 R교육 Midterm Exam"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+```
+
+```{r letter-a, echo=FALSE}
+question("1.다음 중 보기를 대체할 수 있는 것은? 
+         <p>
+         </p>
+         <p> 
+         `` > ?solve  ``
+         </p>",
+  answer("help(solve)", correct = TRUE),
+  answer("print(solve)"),
+  answer("bind(solve)"),
+  answer("matrix(solve)")
+)
+```
+
+```{r letter-b, echo=FALSE}
+question("2.다음 R code의 결과는 무엇인가?
+         <p>
+         </p>
+         <p>
+       `` > x <- 1 ``
+         <br>
+       `` > print(x) ``
+         </br> 
+         </p>" ,
+  answer("1", correct = TRUE),
+  answer("2"),
+  answer("3"),
+  answer("All of the mentioned")
+)
+```
+    
+    
+```{r letter-c, echo=FALSE}
+question("3.R scripts를 포함하는 파일은 다음 중 어느 extension으로 끝나는가? ", 
+  answer(".S"),
+  answer(".R", correct = TRUE),
+  answer(".Rp"),
+  answer("All of the mentioned")
+)
+```
+  
+```{r letter-d, echo=FALSE}
+question("4.값 17을 루트 연산하려고 한다. 적합한 함수 표기는?", 
+  answer("NaN"),
+  answer("-sqrt(17)"),
+  answer("sqrt(17)", correct = TRUE),
+  answer("None of the mentioned")
+)
+```
+
+```{r letter-e, echo=FALSE}
+question("5.다음 중 어느 것이 sequences을 생성하는데 사용되는가?",
+  answer("seq()", correct = TRUE),
+  answer("sequence()"),
+  answer("order()"),
+  answer("None of the mentioned")
+)
+```
+
+```{r letter-f, echo=FALSE}
+question("6.다음 code의 output은 무엇인가?
+         <p>
+         </p>
+         <p>
+       `` > m <- matrix(nrow = 2, ncol = 3) ``
+         <br>
+       `` > dim(m) ``
+         </br> 
+         </p> ",
+  answer("3 2", correct = TRUE),
+  answer("2 3"),
+  answer("2 2"),
+  answer("None of the mentioned")
+)
+```
+
+```{r letter-g, echo=FALSE}
+question("7.다음 code의 output은 무엇인가?
+         <p>
+         </p>
+         <p>
+       `` > m <- matrix(1:6, nrow = 2, ncol = 3) ``
+         <br>
+       `` > m ``
+         </br> 
+         </p> ",
+  answer("[,1] [,2] [,3]
+          <br>
+          [1,] 1 3 5
+          <br> 
+          [2,] 2 4 6", correct = TRUE),
+  answer("[,0] [,1] [,2]
+          <br>
+          [1,] 1 3 5
+          <br> 
+          [2,] 2 4 6"),
+  answer("[,1] [,2] [,3]
+          <br>
+          [1,] 1 3 6
+          <br>
+          [2,] 2 4 5"),
+  answer("All of the mentioned")
+)
+```
+
+```{r letter-h, echo=FALSE}
+question("8.다음 code는 무엇으로 print되는가?
+         <p>
+         </p>
+         <p>
+       `` > m <- 1:10 ``
+         <br>
+       `` > m  ``
+         </br> 
+         </p> ",
+  answer("1 2 3 4 5 6 7 8 9 10", correct = TRUE),
+  answer("1 2 3 4 5 6 7 8 9 10 11"),
+  answer("0 1 2 3 4 5 6 7 8 9 10"),
+  answer("None of the mentioned")
+)
+```
+
+```{r letter-i, echo=FALSE}
+question("9.다음code는 무엇으로 print되는가?
+         <p>
+         </p>
+         <p>
+       `` > x <- 1:3 ``
+         <br>
+       `` > y <- 10:12 ``
+         <br>
+       `` > cbind(x, y) ``
+         </br> 
+         </p> ",
+  answer("x y
+         <br>
+         [1,] 6 10
+         <br>
+         [2,] 7 11
+         <br>
+         [3,] 8 12
+         </br>", correct = TRUE),
+  answer("x y
+         <br>
+         [1,] 1 10
+         <br>
+        [2,] 2 11
+         <br>
+        [3,] 3 12
+         </br>"),
+  answer("x y
+         <br>
+         [1,] 1 4
+         <br>
+         [2,] 2 5
+         <br>
+         [3,] 3 6
+         </br>"),
+  answer("None of the mentioned")
+)
+```
+
+
+```{r letter-j, echo=FALSE}
+question("10.다음code의 결과는 무엇인가?
+         <p>
+         </p>
+         <p>
+       `` > x <- 1:3 ``
+         <br>
+       ``> y <- 10:12 ``
+         <br>
+       `` > rbind(x, y) ``
+         </br> 
+         </p> ",
+  answer("[,1] [,2] [,3]
+         <br>
+          x 1 2 3
+         <br>
+          y 10 11 12
+         </br>", correct = TRUE),
+  answer("[,1] [,2] [,3]
+         <br>
+          x 1 2 3
+         <br>
+          y 10 11 
+         </br>"),
+  answer("[,1] [,2] [,3]
+         <br>
+          x 1 2 3
+         <br>
+          y 4 5 6
+         </br>"),
+  answer("All of the mentioned")
+)
+```
+
+```{r letter-k, echo=FALSE}
+question("11.다음 code는 무엇으로 print되는가?  
+         <p>
+         </p>
+         <p>
+       `` > x <- list(1, TRUE, 1 + 4i) ``
+         <br>
+       ``> x ``
+         </br> 
+         </p> ",
+  answer("[[1]]
+          <br>
+          [1] 1
+          <br>
+          [[2]]
+          <br>
+         [1] TRUE
+          <br> 
+          [[3]]
+          <br>
+          [1] 1+4i ", correct = TRUE),
+  answer("[[1]]
+          <br>
+          [1] 2
+          <br>
+          [[2]]
+          <br>
+         [1] TRUE
+          <br> 
+          [[3]]
+          <br>
+          [1] 1+4i "),
+  answer("[[1]]
+          <br>
+          [1] 3
+          <br>
+          [[2]]
+          <br>
+         [1] TRUE
+          <br> 
+          [[3]]
+          <br>
+          [1] 1+4i "),
+  answer("All of the mentioned")
+)
+```
+
+```{r letter-l, echo=FALSE}
+question("14.다음 code는 무엇으로 print되는가?
+          <p>
+         </p>
+         <p>
+       `` > x <- c(1, 2, NaN, NA, 4) ``
+         <br>
+       ``> is.na(x) ``
+         </br> 
+         </p> ",
+  answer("FALSE FALSE TRUE TRUE FALSE"),
+  answer("FALSE TRUE TRUE TRUE FALSE"),
+  answer("TRUE FALSE TRUE TRUE FALSE", correct = TRUE),
+  answer("None of the mentioned")
+)
+```
+
+```{r letter-m, echo=FALSE}
+question("15.다음 중 어느것이 보기의output으로 출력되는가?
+          <p>
+         </p>
+         <p>
+         foo bar
+         <br>
+         1 1 TRUE
+         <br>
+         2 2 TRUE
+         <br>
+         3 3 FALSE
+         <br>
+         4 4 FALSE
+         </p> ",
+  answer("x <- data.frame(foo = 1:4, bar = c(F, T, F, F))
+          <br>
+          x
+          </br>"),
+  answer("x <- data.frame(foo = 1:6, bar = c(F, T, F, F))
+          <br>
+          x
+          </br>"),
+  answer("x <- data.frame(foo = 1:4, bar = c(T, T, F, F))
+          <br>
+          x
+          </br>", correct = TRUE),
+  answer("None of the mentioned")
+)
+```
+
+```{r letter-n, echo=FALSE}
+question("16.다음 code는 무엇으로 print되는가?
+         <p>
+         </p>
+         <p>
+       `` > x <- data.frame(foo = 1:4, bar = c(T, T, F, F)) ``
+         <br> 
+        ``> ncol(x) ``
+         </p> ",
+  answer("2"),
+  answer("4"),
+  answer("7", correct = TRUE),
+  answer("All of the mentioned")
+)
+```
+
+```{r letter-o, echo=FALSE}
+question("17.만약 파일이 header line을 가지고 있다면 다음 중 어느 argument가 그것을 나타내는가?", 
+  answer("header", correct = TRUE),
+  answer("sep"),
+  answer("file"),
+  answer("all of the mentioned")
+)
+```
+
+```{r letter-p, echo=FALSE}
+question("18.다음 중 파일 “foo.txt”를 불러오는 code는 무엇인가?", 
+  answer("data <- read.table(“foo.txt”)", correct = TRUE),
+  answer("read.data <- read.table(“foo.txt”)"),
+  answer("data <- read.data(“foo.txt”)"),
+  answer("none of the mentioned")
+)
+```
+
+```{r letter-q, echo=FALSE}
+question("19.다음 중 보기 vector에서 first element를 뽑아내는 code는 무엇인가?
+         <p>
+         </p>
+         <p>
+       `` > x <- c(13, 14, 15, 16, 17, 18) ``
+         </p> ",
+  answer("x[10]", correct = TRUE),
+  answer("x[1]"),
+  answer("x[0]"),
+  answer("None of the mentioned")
+)
+```
+
+```{r letter-r, echo=FALSE}
+question("20.다음 중 보기 vector에서 first four element를 뽑아내는 code는 무엇인가?
+         <p>
+         </p>
+         <p>
+       ``> x <- c(13, 14, 15, 16, 17, 18) ``
+         </p> ",
+  answer("x[0:4]"),
+  answer("x[1:4]", correct = TRUE),
+  answer("x[0:3]"),
+  answer("all of the mentioned")
+)
+```
+
+```{r letter-s, echo=FALSE}
+question("21.다음 중 보기 code의 output은 무엇인가?
+         <p>
+         </p>
+         <p>
+       ``> x <- c(13, 14, 15, 16, 17, 18) ``
+         <br>
+       ``> x[c(1, 3, 4)] ``
+         </br>
+         </p> ",
+  answer("13 14 15"),
+  answer("13 15 16", correct = TRUE),
+  answer("13 15 14"),
+  answer("All of the mentioned")
+)
+```
+   
+```{r letter-t, echo=FALSE}
+question("22.다음 중 보기 code의 output은 무엇인가?
+         <p>
+         </p>
+         <p>
+       ``> x <- matrix(1:6, 2, 3) ``
+         <br>
+       ``> x[1, 2] ``
+         </br>
+         </p> ",
+  answer("3", correct = TRUE),
+  answer("2"),
+  answer("1"),
+  answer("0")
+)
+```
+
+```{r letter-u, echo=FALSE}
+question("23.다음 중 보기 code의 output은 무엇인가?
+         <p>
+         </p>
+         <p>
+       ``> x <- matrix(1:6, 2, 3) ``
+         <br>
+       ``> x[1, ] ``
+         </br>
+         </p> ",
+  answer("1 3 5", correct = TRUE),
+  answer("2 3 5"),
+  answer("3 3 5"),
+  answer("All of the mentioned")
+)
+```
+
+```{r letter-v, echo=FALSE}
+question("24.다음 code중 어느 것이 보기 matrix의 the second column을 뽑아내는가?
+         <p>
+         </p>
+         <p>
+       ``> x <- matrix(1:6, 2, 3) ``
+         </p> ",
+  answer("x[2, ].", correct = TRUE),
+  answer("x[1, 2]."),
+  answer("x[, 2].", correct = TRUE),
+  answer("all of the mentioned")
+)
+```
+
+```{r letter-w, echo=FALSE}
+question("25.다음 중 보기 code의 output은 무엇인가?
+         <p>
+         </p>
+         <p>
+       ``> x <- list(foo = 1:4, bar = 0.6) ``
+         <br>
+       ``> x``
+         </br>
+         </p> ",
+   answer("$foo
+           <br>
+          [1] 1 2 3 4
+           <br>
+           $bar
+           <br>
+          [1] 0.6 ", correct = TRUE),
+   answer("$foo
+           <br>
+          [1] 0 1 2 3 4
+           <br>
+           $bar
+           <br>
+          [1] 0 0.6 "),
+   answer("$foo <br>
+           [1] 0 1 2 3 4 <br>
+           $bar <br>
+          [1] 0.6 "),
+   answer("None of the mentioned")
+)
+```
+
+```{r letter-x, echo=FALSE}
+question("26.다음 중 보기 list에서first element를 뽑아내는 code는 무엇인가?
+         <p>
+         </p>
+         <p>
+       ``> x <- list(foo = 1:4, bar = 0.6) ``
+         </p> ",
+   answer("x[[1]].", correct = TRUE),
+   answer("x[1]. "),
+   answer("x[[0]]. "),
+   answer("None of the mentioned")
+)
+```
+
+
+```{r letter-y, echo=FALSE}
+question("27.다음 code의 output은 무엇인가?
+         <p>
+         </p>
+         <p>
+       ``> x <- c(1, 2, NA, 4, NA, 5) ``
+         <br>
+       ``> bad <- is.na(x) ``
+         <br>
+      ``> print(bad) ``
+          </p> ",
+   answer("FALSE FALSE FALSE FALSE TRUE FALSE"),
+   answer("FALSE TRUE TRUE FALSE TRUE FALSE"),
+   answer("FALSE FALSE TRUE FALSE TRUE FALSE ", correct = TRUE),
+   answer("None of the mentioned")
+)
+```
+
+```{r letter-z, echo=FALSE}
+question("28.다음 code의 output은 무엇인가?
+         <p>
+         </p>
+         <p>
+       ``> x <- 1:4 ``
+         <br>
+       ``> y <- 6:9 ``
+         <br>
+       ``> z <- x + y ``
+         <br>
+       ``> z ``
+         </p> ",
+   answer("7 9 11 13", correct = TRUE),
+   answer("7 9 11 13 14"),
+   answer("9 7 11 13 "),
+   answer("NULL")
+)
+```
+
+```{r letter-ab, echo=FALSE}
+question("29.다음 중 a subset of the columns of a data frame을 출력하는 함수는 무엇인가? ",
+   answer("select", correct = TRUE),
+   answer("retrieve"),
+   answer("get "),
+   answer("all of the mentioned")
+)
+```
+
+```{r letter-ac, echo=FALSE}
+question("30.맞는 설명을 고르세요. ",
+   answer("The data frame is a key data structure in statistics and in R"),
+   answer("R has an internal implementation of data frames that is likely the one you will use most often"),
+   answer("There are packages on CRAN that implement data frames via things like relational databases that allow you to operate on very               very large data frames "),
+   answer("All of the mentioned", correct = TRUE)
+)
+```
+
+```{r letter-ad, echo=FALSE}
+question("31._________ generate summary statistics of different variables in the data frame, possibly within strata ",
+   answer("rename"),
+   answer("summarize", correct = TRUE),
+   answer("set"),
+   answer("subset")
+)
+```
+
+```{r letter-ae, echo=FALSE}
+question("32 ________ add new variables/columns or transform existing variables ",
+   answer("mutate", correct = TRUE),
+   answer("add"),
+   answer("apped"),
+   answer("arrange")
+)
+```
+
+
+```{r letter-af, echo=FALSE}
+question("33.The _______ operator is used to connect multiple verb actions together into a pipeline ",
+   answer("pipe", correct = TRUE),
+   answer("piper"),
+   answer("start"),
+   answer("all of the mentioned")
+)
+```
+
+```{r letter-ag, echo=FALSE}
+question("34.Columns can be arranged in descending order too by using the special ____ operator ",
+   answer("asc()"),
+   answer("desc()", correct = TRUE),
+   answer("descending()"),
+   answer("subset")
+)
+```
+
+```{r math, echo=FALSE}
+question("35.The ______ operator allows you to string operations in a left-to-right fashion. ",
+   answer("$%>%>$"),
+   answer("$%>%$", correct = TRUE),
+   answer("$>%>%$"),
+   answer("All of the mentioned")
+)
+```
+
+```{r letter-ah, echo=FALSE}
+question("36.다음 중 어느 것이 옳은 if else statement 인가? ",
+   answer("asc()"),
+   answer("desc()", correct = TRUE),
+   answer("descending()"),
+   answer("All of the mentioned")
+)
+```
+
+```{r letter-ai, echo=FALSE}
+question("37.다음syntax 중 어느 것이 옳은 while loop인가?",
+   answer("while ( statement1 ) statement2"),
+   answer("while ( statement1 ) else statement2", correct = TRUE),
+   answer("while ( statement1 ) do statement2"),
+   answer("All of the mentioned")
+)
+```
+
+```{r letter-aj, echo=FALSE}
+question("38.다음 code의 output은 무엇인가?
+         <p>
+         </p>
+         <p>
+       ``> f <- function(a, b) {``
+         <br>
+       ``+       a^2 ``
+         <br>
+       ``+ }``
+         <br>
+       ``> f(2) ``
+         </p> ",
+   answer("4"),
+   answer("3", correct = TRUE),
+   answer("2"),
+   answer("All of the mentioned")
+)
+```
+
+```{r letter-ak, echo=FALSE}
+question("39. 다음 code의 output은 무엇인가?
+         <p>
+         </p>
+         <p>
+       ``> f <- function(a, b) {``
+         <br>
+       ``+              print(a) ``
+         <br>
+       ``+              print(b)``
+         <br>
+       ``+ } ``
+         <br>
+       > f(45)  
+       </p> ",
+   answer("4"),
+   answer("3", correct = TRUE),
+   answer("2"),
+   answer("All of the mentioned")
+)
+```
